@@ -11,29 +11,47 @@ type ExperienceItem = {
 
 const EXPERIENCE: ExperienceItem[] = [
   {
-    company: 'ShoesHero Studio',
-    role: 'Frontend Engineer',
-    period: '2024 — Present',
+    company: 'PuppyAgent Tech',
+    role: 'Backend Developer',
+    period: 'May 2024 — Dec 2025',
     description:
-      'Building interactive product experiences with React, TypeScript, and delightful motion.',
-    tech: ['React', 'TypeScript', 'Framer Motion', 'Vite'],
+      'Led development of the first production-ready backend for an open-source LLM application, integrating OpenAI APIs and scalable storage.',
+    tech: [
+      'Python',
+      'FastAPI',
+      'Docker',
+      'Supabase',
+      'PostgreSQL',
+      'OpenAI API',
+      'Cloudflare R2',
+      'Amazon S3',
+    ],
   },
   {
-    company: 'Creative Lab',
-    role: 'UI Engineer',
-    period: '2022 — 2024',
+    company: 'N7interactive Inc.',
+    role: 'Backend Developer',
+    period: 'May 2025 — Aug 2025',
     description:
-      'Designed and implemented high-fidelity UI with smooth animations and micro-interactions.',
-    tech: ['React', 'CSS Animations', 'Design Systems'],
+      'Built backend services and microservices in Go, designed PostgreSQL schemas, and architected scalable AWS infrastructure with automated data crawling.',
+    tech: [
+      'Golang',
+      'PostgreSQL',
+      'AWS',
+      'Docker',
+      'Selenium',
+      'GitHub Actions',
+      'hz',
+      'kitex',
+    ],
   },
   {
-    company: 'Freelance',
-    role: 'Web Developer',
-    period: '2019 — 2022',
+    company: 'GRT Transit Application',
+    role: 'Independent Project',
+    period: 'Jan 2024 — Apr 2024',
     description:
-      'Shipped custom websites and portfolios for artists, brands, and creators.',
-    tech: ['JavaScript', 'HTML/CSS', 'Responsive Design'],
-  },
+      'Developed a full-stack transit app with real-time bus information, route planning, fare calculation, and user account management.',
+    tech: ['C#', 'TypeScript', 'MySQL', 'React', '.NET', 'REST APIs', 'Git'],
+  }
 ];
 
 export function ExperienceSection() {
