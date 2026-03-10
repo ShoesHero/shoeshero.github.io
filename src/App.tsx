@@ -1,14 +1,137 @@
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { ExperienceSection } from './components/ExperienceSection';
+import { HeroDanmaku } from './components/HeroDanmaku';
 import { MusicPlayer } from './components/MusicPlayer';
 
+const HERO_NAMES = ['ShoesHero', 'Percival Li', 'Dingyu Li'];
+
+function RotatingName() {
+  const [index, setIndex] = useState(0);
+  const [display, setDisplay] = useState('');
+  const [charIndex, setCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const fullName = HERO_NAMES[index];
+
+    if (!isDeleting && charIndex <= fullName.length) {
+      const timeout = setTimeout(() => {
+        setDisplay(fullName.slice(0, charIndex));
+        setCharIndex((prev) => prev + 1);
+      }, 200);
+      return () => clearTimeout(timeout);
+    }
+
+    if (!isDeleting && charIndex > fullName.length) {
+      const timeout = setTimeout(() => {
+        setIsDeleting(true);
+      }, 1400);
+      return () => clearTimeout(timeout);
+    }
+
+    if (isDeleting && charIndex >= 0) {
+      const timeout = setTimeout(() => {
+        setDisplay(fullName.slice(0, charIndex));
+        setCharIndex((prev) => prev - 1);
+      }, 140);
+      return () => clearTimeout(timeout);
+    }
+
+    if (isDeleting && charIndex < 0) {
+      setIsDeleting(false);
+      setCharIndex(0);
+      setIndex((prev) => (prev + 1) % HERO_NAMES.length);
+    }
+  }, [charIndex, index, isDeleting]);
+
+  useEffect(() => {
+    // kick off typing when component mounts
+    if (charIndex === 0 && !display && !isDeleting) {
+      setCharIndex(1);
+    }
+  }, [charIndex, display, isDeleting]);
+
+  return (
+    <span className="hero-name-typing">
+      {display}
+      <span className="hero-name-caret" />
+    </span>
+  );
+}
+
 function App() {
+  const [showMusicPrompt, setShowMusicPrompt] = useState(true);
+  const [autoPlayMusic, setAutoPlayMusic] = useState(false);
+
+  const handleAcceptMusic = () => {
+    setAutoPlayMusic(true);
+    setShowMusicPrompt(false);
+  };
+
+  const handleDeclineMusic = () => {
+    setShowMusicPrompt(false);
+  };
+
+  const handleHeroDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: { offset: { x: number; y: number } }) => {
+    if (info.offset.y < -120) {
+      const experienceSection = document.getElementById('experience');
+      experienceSection?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="app">
-      <header className="hero">
+      {showMusicPrompt && (
+        <div
+          className="music-modal-overlay"
+          onClick={handleDeclineMusic}
+          aria-hidden="true"
+        >
+          <div
+            className="music-modal"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <p className="music-modal-kicker">ShoesHero&apos;s pick</p>
+            <h2 className="music-modal-title">
+              Want a soundtrack while you explore?
+            </h2>
+            <p className="music-modal-body">
+              Do you want to listen to ShoesHero&apos;s pick while browsing this
+              portfolio?
+            </p>
+            <div className="music-modal-actions">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleAcceptMusic}
+              >
+                Yes, play the music
+              </button>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={handleDeclineMusic}
+              >
+                No thanks
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <motion.header
+        className="hero"
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 0 }}
+        onDragEnd={handleHeroDragEnd}
+      >
+        <HeroDanmaku />
         <div className="hero-overlay" />
         <div className="hero-content">
           <p className="hero-kicker">Portfolio</p>
-          <h1 className="hero-title">ShoesHero</h1>
+          <h1 className="hero-title">
+            <RotatingName />
+          </h1>
           <p className="hero-subtitle">
             Frontend engineer crafting smooth experiences with motion, music, and micro-interactions.
           </p>
@@ -16,12 +139,9 @@ function App() {
             <a href="#experience" className="btn btn-primary">
               View experience
             </a>
-            <a href="#music" className="btn btn-ghost">
-              Play some music
-            </a>
           </div>
         </div>
-      </header>
+      </motion.header>
 
       <main>
         <section id="experience" className="section">
@@ -32,14 +152,23 @@ function App() {
           <ExperienceSection />
         </section>
 
-        <section id="music" className="section section-alt">
+        <section id="contact" className="section section-alt">
           <div className="section-header">
-            <h2>Now Playing</h2>
-            <p>Because every great session needs a soundtrack.</p>
+            <h2>Contact Me</h2>
+            <p>Get in touch — email or call.</p>
           </div>
-          <MusicPlayer />
+          <div className="contact-options">
+            <a href="mailto:p5li@uwaterloo.ca" className="btn btn-primary contact-btn">
+              Email — p5li@uwaterloo.ca
+            </a>
+            <a href="sms:+16475505290" className="btn btn-ghost contact-btn">
+              Text — +1 647 550 5290
+            </a>
+          </div>
         </section>
       </main>
+
+      <MusicPlayer autoPlay={autoPlayMusic} />
 
       <footer className="footer">
         <p>© {new Date().getFullYear()} ShoesHero. All rights reserved.</p>

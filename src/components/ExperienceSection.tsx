@@ -54,6 +54,9 @@ const EXPERIENCE: ExperienceItem[] = [
   }
 ];
 
+/** All unique skills from experience, for danmaku etc. */
+export const ALL_SKILLS = [...new Set(EXPERIENCE.flatMap((e) => e.tech))];
+
 export function ExperienceSection() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({

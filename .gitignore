@@ -14,5 +14,6 @@ pnpm-lock.yaml
 *.local
 *.cache
 .vscode
+.vs
 .idea
 dist

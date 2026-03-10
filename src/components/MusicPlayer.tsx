@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
+const DISK_SCALE = 0.148; /* 56/378 ≈ disk size / panel width */
+const TRANSITION_DURATION = 0.35;
+
 type Track = {
   title: string;
   artist: string;
@@ -23,10 +26,17 @@ const PLAYLIST: Track[] = [
   },
 ];
 
-export function MusicPlayer() {
+type MusicPlayerProps = {
+  autoPlay?: boolean;
+};
+
+export function MusicPlayer({ autoPlay = false }: MusicPlayerProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimizing, setIsMinimizing] = useState(false);
+  const [justExpanded, setJustExpanded] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const track = PLAYLIST[currentIndex];
 
@@ -52,6 +62,12 @@ export function MusicPlayer() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
+
+  useEffect(() => {
+    if (autoPlay) {
+      setIsPlaying(true);
+    }
+  }, [autoPlay]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -87,16 +103,79 @@ export function MusicPlayer() {
     setProgress(value);
   };
 
+  const handleMinimize = () => {
+    setIsMinimizing(true);
+  };
+
+  const handleExpand = () => {
+    setJustExpanded(true);
+    setIsMinimized(false);
+  };
+
+  const handleShrinkComplete = () => {
+    setIsMinimizing(false);
+    setIsMinimized(true);
+  };
+
+  const handleExpandComplete = () => {
+    setJustExpanded(false);
+  };
+
+  if (isMinimized) {
+    return (
+      <>
+        <audio ref={audioRef} src={track.src} preload="metadata" />
+        <motion.button
+          type="button"
+          className="player-disk"
+          onClick={handleExpand}
+          aria-label="Expand player"
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.25, ease: [0.22, 0.61, 0.36, 1] }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.96 }}
+        >
+          <span className="player-disk-icon">{isPlaying ? '❚❚' : '▶'}</span>
+        </motion.button>
+      </>
+    );
+  }
+
   return (
-    <motion.div
-      className="player"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1] }}
-    >
+    <>
       <audio ref={audioRef} src={track.src} preload="metadata" />
-      <div className="player-visual">
+      <motion.div
+        className="player-wrapper"
+        style={{ originX: 1, originY: 1 }}
+        initial={{ scale: justExpanded ? DISK_SCALE : 1, opacity: justExpanded ? 0.85 : 1 }}
+        animate={{
+          scale: isMinimizing ? DISK_SCALE : 1,
+          opacity: 1,
+        }}
+        transition={{
+          duration: TRANSITION_DURATION,
+          ease: [0.22, 0.61, 0.36, 1],
+        }}
+        onAnimationComplete={() => {
+          if (isMinimizing) handleShrinkComplete();
+          else if (justExpanded) handleExpandComplete();
+        }}
+      >
+        <motion.div
+          className="player"
+          animate={{ opacity: isMinimizing ? 0 : 1 }}
+          transition={{ duration: TRANSITION_DURATION * 0.6 }}
+        >
+          <button
+            type="button"
+            className="player-minimize"
+            onClick={handleMinimize}
+            aria-label="Minimize player"
+          >
+            −
+          </button>
+          <div className="player-visual">
         <motion.div
           className="player-orb"
           animate={{ scale: isPlaying ? [1, 1.05, 1] : 1 }}
@@ -168,7 +247,9 @@ export function MusicPlayer() {
           </div>
         </div>
       </div>
-    </motion.div>
+        </motion.div>
+      </motion.div>
+    </>
   );
 }
 
