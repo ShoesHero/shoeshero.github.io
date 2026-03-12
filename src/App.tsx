@@ -19,14 +19,14 @@ function RotatingName() {
       const timeout = setTimeout(() => {
         setDisplay(fullName.slice(0, charIndex));
         setCharIndex((prev) => prev + 1);
-      }, 200);
+      }, 110);
       return () => clearTimeout(timeout);
     }
 
     if (!isDeleting && charIndex > fullName.length) {
       const timeout = setTimeout(() => {
         setIsDeleting(true);
-      }, 1400);
+      }, 2500);
       return () => clearTimeout(timeout);
     }
 
@@ -34,7 +34,7 @@ function RotatingName() {
       const timeout = setTimeout(() => {
         setDisplay(fullName.slice(0, charIndex));
         setCharIndex((prev) => prev - 1);
-      }, 140);
+      }, 70);
       return () => clearTimeout(timeout);
     }
 
@@ -133,7 +133,9 @@ function App() {
             <RotatingName />
           </h1>
           <p className="hero-subtitle">
-            Frontend engineer crafting smooth experiences with motion, music, and micro-interactions.
+            Backend &amp; Full-Stack Engineer with hands-on AI integration experience.
+            Shipping production systems in Python, Go, and C/C++ <br />
+            From full-stack web applications to LLM-powered products.
           </p>
           <div className="hero-cta-row">
             <a href="#experience" className="btn btn-primary">
@@ -147,7 +149,7 @@ function App() {
         <section id="experience" className="section">
           <div className="section-header">
             <h2>Experience in Motion</h2>
-            <p>Scroll through a timeline of what you&apos;ve built and shipped.</p>
+            <p>Scroll through a timeline of what I&apos;ve built and shipped.</p>
           </div>
           <ExperienceSection />
         </section>
