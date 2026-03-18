@@ -11,29 +11,61 @@ type ExperienceItem = {
   images?: string[];
 };
 
+type EducationItem = {
+  school: string;
+  degree: string;
+  period: string;
+  location: string;
+  details: string[];
+};
+
 const EXPERIENCE: ExperienceItem[] = [
+  {
+    company: 'HighQ Technologies',
+    role: 'Full Stack Developer',
+    period: 'Jan 2026 — Present',
+    description:
+      'Rebuilding scientific control and visualization tools with a modern React + FastAPI stack and production-ready automation.',
+    tech: [
+      'Python',
+      'FastAPI',
+      'TypeScript',
+      'React',
+      'Vite',
+      'PyQt5',
+      'Jira',
+      'Bitbucket',
+      'GitHub Actions',
+    ],
+    details: [
+      'Recreated a complex experiment equipment controller by decoupling a legacy standalone system into a React frontend and FastAPI backend, improving modularity and long-term maintainability.',
+      'Refactored a scientific measurement library to isolate signal event management, replacing event-driven behavior with a robust polling mechanism for greater reliability and testability.',
+      'Redesigned a customized HDF5 file viewer in PyQt5, delivering an intuitive scientific file explorer UI for complex data inspection.',
+      'Implemented a production-grade build and deployment pipeline with GitHub Actions, enabling reproducible, automated, and reliable deployments across environments.',
+    ],
+  },
   {
     company: 'PuppyAgent Tech',
     role: 'Backend Developer',
     period: 'May 2024 — Dec 2025',
     description:
-      'Led development of the first production-ready backend for an open-source LLM application, integrating OpenAI APIs and scalable storage.',
+      'Built the first production-ready backend for an open-source RAG pipeline platform and shipped custom LLM-powered chat solutions.',
     tech: [
       'Python',
       'FastAPI',
-      'Docker',
       'Supabase',
       'PostgreSQL',
+      'Docker',
       'OpenAI API',
       'Cloudflare R2',
       'Amazon S3',
     ],
     details: [
-      'Spearheaded development of the first production-ready backend for an open-source LLM application. Backed with FastAPI, Supabase, PostgreSQL, and Docker.',
-      'Integrated OpenAI APIs, performing major system refactoring and implementing new features that strengthened functionality and scalability.',
-      'Built a scalable file and embedding storage system, improving efficiency and interoperability.',
-      'Continuously contribute to this open-source project, maintaining and improving the codebase for broader community use.',
-      'Independently delivered a custom client chatbot solution valued at $20,000, optimized for <2s time-to-first-token, with knowledge base and internet querying.',
+      'Spearheaded development of the first production-ready backend for an open-source RAG pipeline platform using FastAPI, Supabase, PostgreSQL, and Docker.',
+      'Integrated OpenAI APIs, performing major system refactoring and adding new features that strengthened functionality and scalability.',
+      'Designed and maintained frontend-to-backend communication protocols, ensuring reliable, efficient, and secure data exchange between client interfaces and server systems.',
+      'Continuously contributed to the open-source project by maintaining and enhancing the codebase for community-wide adoption.',
+      'Delivered an independently developed custom client chatbot solution valued at $20,000, achieving <2s time-to-first-token with integrated knowledge base and internet querying.',
     ],
   },
   {
@@ -41,7 +73,7 @@ const EXPERIENCE: ExperienceItem[] = [
     role: 'Backend Developer',
     period: 'May 2025 — Aug 2025',
     description:
-      'Built backend services and microservices in Go, designed PostgreSQL schemas, and architected scalable AWS infrastructure with automated data crawling.',
+      'Developed backend services in Go, designed PostgreSQL schemas, and architected scalable AWS infrastructure with automated data crawling.',
     tech: [
       'Golang',
       'PostgreSQL',
@@ -103,6 +135,19 @@ const EXPERIENCE: ExperienceItem[] = [
       'Produced technical reports analyzing vulnerabilities, device performance, and market positioning.',
     ],
   }
+];
+
+const EDUCATION: EducationItem[] = [
+  {
+    school: 'University of Waterloo',
+    degree: 'Bachelor of Software Engineering (Honors, Co-op)',
+    period: 'Expected April 2027',
+    location: 'Waterloo, ON',
+    details: [
+      'Rigorous engineering curriculum with a focus on software design, systems programming, and large-scale application development.',
+      'Completed multiple co-op terms building production systems across backend, full-stack web, and infrastructure roles.',
+    ],
+  },
 ];
 
 /** All unique skills from experience, for danmaku etc. */
@@ -243,6 +288,32 @@ export function ExperienceSection() {
           />
         )}
       </AnimatePresence>
+
+      <section className="education-panel">
+        <header className="education-header">
+          <h3>Education</h3>
+        </header>
+        <div className="education-cards">
+          {EDUCATION.map((edu) => (
+            <article key={edu.school} className="education-card">
+              <header className="education-card-header">
+                <div>
+                  <h4>{edu.degree}</h4>
+                  <p className="school">
+                    {edu.school} — {edu.location}
+                  </p>
+                </div>
+                <span className="period">{edu.period}</span>
+              </header>
+              <ul className="education-details">
+                {edu.details.map((d) => (
+                  <li key={d}>{d}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
