@@ -80,6 +80,13 @@ function App() {
     }
   };
 
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <div className="app">
       {showMusicPrompt && (
@@ -138,8 +145,25 @@ function App() {
             From full-stack web applications to LLM-powered products.
           </p>
           <div className="hero-cta-row">
-            <a href="#experience" className="btn btn-primary">
+            <a
+              href="#experience"
+              className="btn btn-primary"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('experience');
+              }}
+            >
               View experience
+            </a>
+            <a
+              href="#contact"
+              className="btn btn-ghost"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('contact');
+              }}
+            >
+              Contact me
             </a>
           </div>
         </div>
