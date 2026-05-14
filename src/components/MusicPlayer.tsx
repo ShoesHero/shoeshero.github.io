@@ -5,6 +5,23 @@ const DISK_SCALE = 0.148;
 const TRANSITION_DURATION = 0.35;
 const FADE_MS = 600;
 const FADE_INTERVAL_MS = 30;
+/** Cumulative scroll distance (px) before auto-minimizing; filters tiny jitter. */
+const SCROLL_MINIMIZE_THRESHOLD_PX = 52;
+
+function scrollTrackingElement(target: EventTarget | null): HTMLElement | null {
+  if (typeof document === 'undefined') return null;
+  if (target === document || target === document.documentElement || target === document.body) {
+    return document.documentElement;
+  }
+  if (target instanceof HTMLElement) return target;
+  return null;
+}
+
+function scrollAxisPosition(el: HTMLElement): number {
+  if (typeof window === 'undefined') return 0;
+  if (el === document.documentElement) return window.scrollY;
+  return el.scrollTop;
+}
 
 type Track = {
   title: string;
@@ -38,6 +55,8 @@ export function MusicPlayer({ autoPlay = false }: MusicPlayerProps) {
   const [isFading, setIsFading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const pendingIndexRef = useRef<number | null>(null);
+  const scrollAccumRef = useRef(0);
+  const lastScrollPosByElRef = useRef<Map<HTMLElement, number>>(new Map());
   const track = PLAYLIST[currentIndex];
 
   const fadeOut = useCallback((): Promise<void> => {
@@ -174,6 +193,11 @@ export function MusicPlayer({ autoPlay = false }: MusicPlayerProps) {
   };
 
   const handleExpand = () => {
+    scrollAccumRef.current = 0;
+    lastScrollPosByElRef.current.clear();
+    if (typeof document !== 'undefined') {
+      lastScrollPosByElRef.current.set(document.documentElement, window.scrollY);
+    }
     setJustExpanded(true);
     setIsMinimized(false);
   };
@@ -186,6 +210,30 @@ export function MusicPlayer({ autoPlay = false }: MusicPlayerProps) {
   const handleExpandComplete = () => {
     setJustExpanded(false);
   };
+
+  useEffect(() => {
+    const last = lastScrollPosByElRef.current;
+    last.set(document.documentElement, window.scrollY);
+
+    const onScroll = (ev: Event) => {
+      if (isMinimized || isMinimizing) return;
+      const el = scrollTrackingElement(ev.target);
+      if (!el) return;
+      const pos = scrollAxisPosition(el);
+      const prev = last.get(el);
+      if (prev !== undefined) {
+        scrollAccumRef.current += Math.abs(pos - prev);
+      }
+      last.set(el, pos);
+      if (scrollAccumRef.current >= SCROLL_MINIMIZE_THRESHOLD_PX) {
+        scrollAccumRef.current = 0;
+        setIsMinimizing(true);
+      }
+    };
+
+    document.addEventListener('scroll', onScroll, { capture: true, passive: true });
+    return () => document.removeEventListener('scroll', onScroll, { capture: true });
+  }, [isMinimized, isMinimizing]);
 
   if (isMinimized) {
     return (
