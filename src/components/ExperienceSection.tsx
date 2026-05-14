@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type ExperienceItem = {
   company: string;
@@ -23,7 +23,7 @@ const EXPERIENCE: ExperienceItem[] = [
   {
     company: 'HighQ Technologies',
     role: 'Full Stack Developer',
-    period: 'Jan 2026 — Present',
+    period: 'Jan 2026 — Apr 2026',
     description:
       'Rebuilding scientific control and visualization tools with a modern React + FastAPI stack and production-ready automation.',
     tech: [
@@ -236,6 +236,23 @@ export function ExperienceSection() {
   });
 
   const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+
+  useEffect(() => {
+    if (selectedIndex === null) return;
+
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = body.style.overflow;
+
+    html.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
+
+    return () => {
+      html.style.overflow = prevHtmlOverflow;
+      body.style.overflow = prevBodyOverflow;
+    };
+  }, [selectedIndex]);
 
   return (
     <div className="experience" ref={containerRef}>
