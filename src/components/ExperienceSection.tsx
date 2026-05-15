@@ -25,7 +25,7 @@ const EXPERIENCE: ExperienceItem[] = [
     role: 'Full Stack Developer',
     period: 'Jan 2026 — Apr 2026',
     description:
-      'Rebuilding scientific control and visualization tools with a modern React + FastAPI stack and production-ready automation.',
+      'Modular React and FastAPI control systems for experimental equipment, polling-based measurement libraries, and GitHub Actions CI/CD across dev, staging, and production.',
     tech: [
       'Python',
       'FastAPI',
@@ -38,10 +38,9 @@ const EXPERIENCE: ExperienceItem[] = [
       'GitHub Actions',
     ],
     details: [
-      'Recreated a complex experiment equipment controller by decoupling a legacy standalone system into a React frontend and FastAPI backend, improving modularity and long-term maintainability.',
-      'Refactored a scientific measurement library to isolate signal event management, replacing event-driven behavior with a robust polling mechanism for greater reliability and testability.',
-      'Redesigned a customized HDF5 file viewer in PyQt5, delivering an intuitive scientific file explorer UI for complex data inspection.',
-      'Implemented a production-grade build and deployment pipeline with GitHub Actions, enabling reproducible, automated, and reliable deployments across environments.',
+      'Rebuilt a complex experimental equipment control system using React and FastAPI by decoupling a legacy standalone application into modular frontend and backend services, enabling remote access from anywhere and receiving highly positive stakeholder feedback; additionally contributed to designing the architecture for the next major version of the application focused on full decoupling and modularization.',
+      'Refactored a core scientific measurement library by replacing PyQt signal-based event handling with a standardized polling-based architecture, removing unnecessary frontend framework dependencies from the backend and resulting in improved reliability, easier debugging, and better testability.',
+      'Implemented CI/CD pipelines using GitHub Actions to automate testing, builds, and deployments across development, staging, and production environments, reducing manual release effort and enabling consistent, reliable cross-environment deployments with improved release stability.',
     ],
   },
   {
@@ -49,7 +48,7 @@ const EXPERIENCE: ExperienceItem[] = [
     role: 'Backend Developer',
     period: 'May 2024 — Dec 2025',
     description:
-      'Built the first production-ready backend for an open-source RAG pipeline platform and shipped custom LLM-powered chat solutions.',
+      'Production RAG platform backend on FastAPI and Supabase, RESTful client integration, and a revenue-generating custom AI chatbot with sub-2s time-to-first-token.',
     tech: [
       'Python',
       'FastAPI',
@@ -61,11 +60,9 @@ const EXPERIENCE: ExperienceItem[] = [
       'Amazon S3',
     ],
     details: [
-      'Spearheaded development of the first production-ready backend for an open-source RAG pipeline platform using FastAPI, Supabase, PostgreSQL, and Docker.',
-      'Integrated OpenAI APIs, performing major system refactoring and adding new features that strengthened functionality and scalability.',
-      'Designed and maintained frontend-to-backend communication protocols, ensuring reliable, efficient, and secure data exchange between client interfaces and server systems.',
-      'Continuously contributed to the open-source project by maintaining and enhancing the codebase for community-wide adoption.',
-      'Delivered an independently developed custom client chatbot solution valued at $20,000, achieving <2s time-to-first-token with integrated knowledge base and internet querying.',
+      'Spearheaded development of the first production-ready backend for an open-source RAG platform using FastAPI, Supabase, PostgreSQL, and Docker by designing system architecture and implementing core infrastructure and business logic, while actively collecting user feedback to iterate on features and refine product design for improved usability and performance.',
+      'Designed and implemented frontend-to-backend communication protocols using RESTful APIs and structured data exchange patterns by defining consistent request/response schemas, error-handling conventions, and authentication flows, enabling reliable and secure client-server integration.',
+      'Delivered a custom AI chatbot solution with integrated knowledge-base retrieval and internet querying, achieving sub-2-second response time-to-first-token for a smooth live exhibition experience, generating approximately $20,000 in revenue.',
     ],
   },
   {
@@ -73,7 +70,7 @@ const EXPERIENCE: ExperienceItem[] = [
     role: 'Backend Developer',
     period: 'May 2025 — Aug 2025',
     description:
-      'Developed backend services in Go, designed PostgreSQL schemas, and architected scalable AWS infrastructure with automated data crawling.',
+      'Go backends with hz and kitex, AWS distributed architecture, and Selenium-based large-scale data acquisition.',
     tech: [
       'Golang',
       'PostgreSQL',
@@ -85,11 +82,9 @@ const EXPERIENCE: ExperienceItem[] = [
       'kitex',
     ],
     details: [
-      'Developed business logic and server-side systems, building RESTful APIs with hz (HTTP) and kitex (RPC code generation).',
-      'Designed and optimized the PostgreSQL database schema, ensuring scalability and data integrity.',
-      'Architected scalable AWS infrastructure including load balancer, API gateway, message broker, dockerized microservices, and Lambda functions, ensuring high availability and performance.',
-      'Automated large-scale data crawling with Selenium, successfully acquiring 50,000+ product records from one of the biggest fashion e-commerce platforms.',
-      'Designed robust GitHub Actions pipelines for CI/CD, automating testing, building, and deployment of microservices.',
+      'Developed backend business logic and RESTful APIs using hz and kitex, resulting in scalable and maintainable server-side systems.',
+      'Architected AWS infrastructure using load balancers, API Gateway, Lambda functions, and dockerized microservices, resulting in highly available and performant distributed systems.',
+      'Automated large-scale data crawling using Selenium, resulting in successful acquisition of over 50,000 product records from a major fashion e-commerce platform.',
     ],
   },
   {
